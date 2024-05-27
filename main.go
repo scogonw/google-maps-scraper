@@ -6,6 +6,7 @@ import (
 	"database/sql"
 	"encoding/csv"
 	"flag"
+	"fmt"
 	"io"
 	"os"
 	"runtime"
@@ -145,12 +146,18 @@ func runFromDatabase(ctx context.Context, args *arguments) error {
 	}
 
 	provider := postgres.NewProvider(db)
+	if provider == nil {
+		return fmt.Errorf("failed to initialize provider")
+	}
 
 	if args.produceOnly {
 		return produceSeedJobs(ctx, args, provider)
 	}
 
 	psqlWriter := postgres.NewResultWriter(db)
+	if psqlWriter == nil {
+		return fmt.Errorf("failed to initialize psqlWriter")
+	}
 
 	writers := []scrapemate.ResultWriter{
 		psqlWriter,
@@ -259,7 +266,7 @@ type arguments struct {
 
 func parseArgs() (args arguments) {
 	const (
-		defaultDepth      = 1
+		defaultDepth      = 10
 		defaultCPUDivider = 2
 	)
 
