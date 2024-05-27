@@ -212,7 +212,7 @@ Password is `postgres`
 Then from your host run:
 
 ```
-go run main.go -dsn "postgres://postgres:postgres@localhost:5432/postgres" -produce -input example-queries.txt --lang el
+go run main.go -dsn "postgres://postgres:postgres@localhost:5432/postgres" -produce -input example-queries.txt --lang en
 ```
 
 (configure your queries and the desired language)
