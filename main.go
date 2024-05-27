@@ -259,7 +259,7 @@ type arguments struct {
 
 func parseArgs() (args arguments) {
 	const (
-		defaultDepth      = 10
+		defaultDepth      = 1
 		defaultCPUDivider = 2
 	)
 
