@@ -133,9 +133,9 @@ func (p *provider) Jobs(ctx context.Context) (<-chan scrapemate.IJob, <-chan err
 // Push pushes a job to the job provider
 func (p *provider) Push(ctx context.Context, job scrapemate.IJob) error {
 	q := `INSERT INTO gmaps_jobs
-		(id, run_id, priority, payload_type, payload, created_at, status)
+		(id, priority, payload_type, payload, created_at, status)
 		VALUES
-		($1, $2, $3, $4, $5, $6, $7) ON CONFLICT DO NOTHING`
+		($1, $2, $3, $4, $5, $6) ON CONFLICT DO NOTHING`
 
 	var buf bytes.Buffer
 	enc := gob.NewEncoder(&buf)
@@ -160,7 +160,7 @@ func (p *provider) Push(ctx context.Context, job scrapemate.IJob) error {
 	}
 
 	_, err := p.db.ExecContext(ctx, q,
-		job.GetID(), job.GetParentID(), job.GetPriority(), payloadType, buf.Bytes(), time.Now().UTC(), statusNew,
+		job.GetID(), job.GetPriority(), payloadType, buf.Bytes(), time.Now().UTC(), statusNew,
 	)
 
 	return err

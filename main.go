@@ -14,7 +14,7 @@ import (
 	"time"
 
 	// postgres driver
-	"github.com/google/uuid"
+
 	_ "github.com/jackc/pgx/v5/stdlib"
 
 	"github.com/gosom/scrapemate"
@@ -225,7 +225,6 @@ func produceSeedJobs(ctx context.Context, args *arguments, provider scrapemate.J
 
 func createSeedJobs(langCode string, r io.Reader, maxDepth int, email bool) (jobs []scrapemate.IJob, err error) {
 	scanner := bufio.NewScanner(r)
-	runId := uuid.New().String()
 	for scanner.Scan() {
 		query := strings.TrimSpace(scanner.Text())
 		if query == "" {
@@ -239,7 +238,7 @@ func createSeedJobs(langCode string, r io.Reader, maxDepth int, email bool) (job
 			id = strings.TrimSpace(after)
 		}
 
-		jobs = append(jobs, gmaps.NewGmapJob(id, runId, langCode, query, maxDepth, email))
+		jobs = append(jobs, gmaps.NewGmapJob(id, langCode, query, maxDepth, email))
 	}
 
 	return jobs, scanner.Err()

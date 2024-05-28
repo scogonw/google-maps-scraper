@@ -1,7 +1,6 @@
 BEGIN;
     CREATE TABLE gmaps_jobs(
         id UUID PRIMARY KEY,
-        run_id UUID NOT NULL,
         priority SMALLINT NOT NULL,
         payload_type TEXT NOT NULL,
         payload BYTEA NOT NULL,
